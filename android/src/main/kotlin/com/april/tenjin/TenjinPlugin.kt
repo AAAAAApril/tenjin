@@ -43,14 +43,6 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
                     result.success(true)
                 }
             }
-            "optIn" -> {
-                sdk!!.optIn()
-                result.success(true)
-            }
-            "optOut" -> {
-                sdk!!.optOut()
-                result.success(true)
-            }
             "optInParams" -> {
                 sdk!!.optInParams(
                     (call.argument("params") as? List<String>)?.toTypedArray()
@@ -80,32 +72,17 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
                 )
                 result.success(true)
             }
-            "eventWithName" -> {
+            "event" -> {
                 val name = call.argument("name") as? String
                 if (name.isNullOrEmpty()) {
                     result.success(false)
                 } else {
-                    sdk!!.eventWithName(name)
-                    result.success(true)
-                }
-            }
-            "eventWithNameAndIntValue" -> {
-                val name = call.argument("name") as? String
-                val value = call.argument("value") as? Int
-                if (name.isNullOrEmpty() || value == null) {
-                    result.success(false)
-                } else {
-                    sdk!!.eventWithNameAndValue(name, value)
-                    result.success(true)
-                }
-            }
-            "eventWithNameAndStringValue" -> {
-                val name = call.argument("name") as? String
-                val value = call.argument("value") as? String
-                if (name.isNullOrEmpty() || value == null) {
-                    result.success(false)
-                } else {
-                    sdk!!.eventWithNameAndValue(name, value)
+                    val value = call.argument("value") as? String
+                    if (value == null) {
+                        sdk!!.eventWithName(name)
+                    }else{
+                        sdk!!.eventWithNameAndValue(name, value)
+                    }
                     result.success(true)
                 }
             }
