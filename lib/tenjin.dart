@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 
 ///必须要调用了 [optIn]/[optOut]/[optInParams]/[optOutParams] 之后才调用 [connect]
 ///当然，不调用前面那几个应该也可以
+///
+/// 文档：https://docs.tenjin.com/cn/send-events/android.html
+///
 class Tenjin {
   Tenjin._();
 
@@ -27,7 +30,7 @@ class Tenjin {
   }
 
   static Future<void> optInParams({
-    //TODO 这里需要的参数要看文档
+    // 这里需要的参数要看文档
     List<String> params = const <String>[],
   }) {
     return _channel
@@ -39,7 +42,7 @@ class Tenjin {
   }
 
   static Future<void> optOutParams({
-    //TODO 这里需要的参数要看文档
+    // 这里需要的参数要看文档
     List<String> params = const <String>[],
   }) {
     return _channel
