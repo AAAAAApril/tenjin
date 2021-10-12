@@ -1,7 +1,9 @@
 package com.april.tenjin
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.NonNull
+import com.tenjin.android.BuildConfig
 import com.tenjin.android.TenjinSDK
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -29,6 +31,7 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         if (call.method != "init") {
             if (sdk == null) {
+                log("未初始化，不允许调用其他方法")
                 result.error("需要先调用 init 初始化 TenjinSDK", null, null)
                 return
             }
@@ -40,6 +43,7 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
                     result.success(false)
                 } else {
                     sdk = TenjinSDK.getInstance(context, apiKey)
+                    log("初始化成功：$apiKey")
                     result.success(true)
                 }
             }
@@ -58,6 +62,7 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
                 result.success(true)
             }
             "connect" -> {
+                log("连接Tenjin")
                 sdk!!.connect()
                 result.success(true)
             }
@@ -74,13 +79,15 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
             }
             "event" -> {
                 val name = call.argument("name") as? String
+                log("事件：$name")
                 if (name.isNullOrEmpty()) {
                     result.success(false)
                 } else {
                     val value = call.argument("value") as? String
+                    log("事件值：$value")
                     if (value == null) {
                         sdk!!.eventWithName(name)
-                    }else{
+                    } else {
                         sdk!!.eventWithNameAndValue(name, value)
                     }
                     result.success(true)
@@ -101,4 +108,10 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
+}
+
+private fun log(msg: String) {
+    if (BuildConfig.DEBUG) {
+        Log.e("TenjinPlugin", msg)
+    }
 }
