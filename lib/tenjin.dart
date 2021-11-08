@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 class Tenjin {
   Tenjin._();
 
-  static const MethodChannel _channel = MethodChannel('april_tenjin');
+  static const MethodChannel _channel = MethodChannel('tenjin');
 
   ///初始化
   static Future<bool> init(String apiKey) {
