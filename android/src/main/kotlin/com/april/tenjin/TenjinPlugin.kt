@@ -1,11 +1,8 @@
 package com.april.tenjin
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.NonNull
-import com.tenjin.android.BuildConfig
 import com.tenjin.android.TenjinSDK
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -42,6 +39,20 @@ class TenjinPlugin : FlutterPlugin, MethodCallHandler {
                     result.success(false)
                 } else {
                     sdk = TenjinSDK.getInstance(context, apiKey)
+                    when (call.argument<String?>("appStoreType")) {
+                        "googleplay" -> {
+                            sdk!!.setAppStore(TenjinSDK.AppStoreType.googleplay)
+                        }
+                        "amazon" -> {
+                            sdk!!.setAppStore(TenjinSDK.AppStoreType.amazon)
+                        }
+                        "other" -> {
+                            sdk!!.setAppStore(TenjinSDK.AppStoreType.other)
+                        }
+                        else -> {
+                            sdk!!.setAppStore(TenjinSDK.AppStoreType.unspecified)
+                        }
+                    }
                     result.success(true)
                 }
             }

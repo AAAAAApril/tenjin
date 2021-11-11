@@ -13,10 +13,16 @@ class Tenjin {
   static const MethodChannel _channel = MethodChannel('tenjin');
 
   ///初始化
-  static Future<bool> init(String apiKey) {
+  ///[appStoreType] 需要查看文档以确认枚举值
+  ///googleplay   amazon   other
+  static Future<bool> init(
+    String apiKey, {
+    String appStoreType = 'googleplay',
+  }) {
     return _channel
         .invokeMethod<bool>('init', <String, dynamic>{
           'apiKey': apiKey,
+          'appStoreType': appStoreType,
         })
         .then<bool>((value) => value ?? false)
         .catchError((_) => false);
